@@ -3,9 +3,19 @@ const otpModel = require('../models/otpModel')
 const { smsOtp, otpValidiation } = require("../utils/otp");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sendTokens } = require('../utils/tokenUtils');
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^\d{10}$/;
+
+
+const googleCallback = (req, res) => {
+  const user = { id: req.user.id, email: req.user.email };
+  sendTokens(res, user); 
+  res.redirect('/'); 
+};
+exports.googleCallback = googleCallback
+
 
 const signUp = async (req,res) => {
     try
